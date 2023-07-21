@@ -47,19 +47,20 @@ public class Devolucao extends javax.swing.JFrame {
             
             for(int i = 0; i < listagem.size(); i++){
                 model.addRow(new Object[]{
-                    listagem.get(i).getLivro().getIdNomeLivro(),
+                    listagem.get(i).getEmprestimoLivro().getIdEmprestimo(),
                     listagem.get(i).getLivro().getNumeroRegistroVirtual(),
                     listagem.get(i).getLivro().getNomeLivro(),
                     listagem.get(i).getLivro().getStatusLivro(),
                     listagem.get(i).getAluno().getNomeUsuario(),
                     listagem.get(i).getDataRetorno(),
+                    listagem.get(i).getEmprestimoLivro().getLivroDevolvido()
                 });
-                
+              
             devolucaoDao.desconectar();
             }
         }    
         } catch (Exception e) {
-                System.out.println("Erro ao Listar o Produto: " + e.getMessage());
+                System.out.println("Erro ao Listar de Devolução: " + e.getMessage());
         }
     }
     
@@ -87,6 +88,8 @@ public class Devolucao extends javax.swing.JFrame {
         jbVoltar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jtfIdEmprestimo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jtfIdLivro = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,17 +128,17 @@ public class Devolucao extends javax.swing.JFrame {
 
         jtTabelaDevolucao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id Livro", "Codigo Livro", "Nome do Livro", "Status do Livro", "Nome do Aluno", "Retorno"
+                "Id Emprestimo", "Codigo Livro", "Nome do Livro", "Status do Livro", "Nome do Aluno", "Retorno", "LivroDevolvido"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -162,7 +165,7 @@ public class Devolucao extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("ID Livro");
+        jLabel2.setText("ID Emprestimo");
 
         jtfIdEmprestimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,51 +173,64 @@ public class Devolucao extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("ID");
+
+        jtfIdLivro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jtfStatusLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfNomeLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtfCodigoLivro, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                            .addComponent(jtfIdEmprestimo)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jtfRetornoLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jbConsultarLivro)
-                            .addGap(18, 18, 18)
-                            .addComponent(jbDevolucao)
-                            .addGap(18, 18, 18)
-                            .addComponent(jbVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(236, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtfStatusLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jtfCodigoLivro, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                                            .addComponent(jtfIdEmprestimo)))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jtfRetornoLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jbConsultarLivro)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jbDevolucao)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jbVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 376, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfNomeLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(37, 37, 37))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +253,9 @@ public class Devolucao extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jtfNomeLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfNomeLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jtfIdLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -288,10 +306,12 @@ public class Devolucao extends javax.swing.JFrame {
         DevolucaoLivro devolucao = new DevolucaoLivro();
         DevolucaoDao dao = new DevolucaoDao();
         Livro livro = new Livro();
+        EmprestimoLivro emprestimo = new EmprestimoLivro();
                                        
         boolean status;
         int resposta;
         int statusLivro;
+        int statusDevolucao;
         
         //Convertendo a data digitada para o padrão do banco de dados.
         String dataRecebida = jtfRetornoLivro.getText(); //Um String para receber a data digitada em Portugues
@@ -306,8 +326,8 @@ public class Devolucao extends javax.swing.JFrame {
             System.out.println("Erro na conversão de Data: " + ex.getMessage());
         }
         
-        livro.setIdNomeLivro(Integer.valueOf(jtfIdEmprestimo.getText()));
-       
+        livro.setIdNomeLivro(Integer.valueOf(jtfIdLivro.getText()));
+        emprestimo.setIdEmprestimo(Integer.valueOf(jtfIdEmprestimo.getText()));
         
         dao = new DevolucaoDao();
 
@@ -321,9 +341,15 @@ public class Devolucao extends javax.swing.JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Erro nos Dados de devolução do livro");
             }
-            statusLivro = dao.AtualizarStatus(livro);
+            statusLivro = dao.AtualizarStatusLivro(livro);
             if(statusLivro == 1){
                 JOptionPane.showMessageDialog(null, "Status do emprestimo do livro atualizado com sucesso");
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro no atulizar o Status do livro"); 
+            }
+            statusDevolucao = dao.AtualizarStatusDevolucao(emprestimo);
+            if(statusDevolucao == 1){
+                JOptionPane.showMessageDialog(null, "Status da Devolução do livro atualizado com sucesso");
             }else{
                 JOptionPane.showMessageDialog(null, "Erro no atulizar o Status do livro"); 
             }
@@ -337,9 +363,10 @@ public class Devolucao extends javax.swing.JFrame {
     private void jbConsultarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConsultarLivroActionPerformed
         String id;
         id = jtfIdEmprestimo.getText();
-        String txtIdLivro = jtfIdEmprestimo.getText();
-        if(txtIdLivro.isEmpty()){
-            JOptionPane.showMessageDialog(null, "O campo ID do Livro emprestado deve ser preenchido!!");
+        
+        String txtIdEmprestimo = jtfIdEmprestimo.getText();
+        if(txtIdEmprestimo.isEmpty()){
+            JOptionPane.showMessageDialog(null, "O campo ID do Emprestimo do livro deve ser preenchido!!");
             return;
         }
         
@@ -347,16 +374,17 @@ public class Devolucao extends javax.swing.JFrame {
         boolean status = dao.conectar();
         
         if (status == true) { //Quando não é encontrado no campo ele retorna "Funcionário não localizado".
-            Livro livroEncontrado = dao.consultar(Integer.parseInt(jtfIdEmprestimo.getText())); // passar do méodo pesquisar o que está vindo da tela
+            EmprestimoLivro livroEncontrado = dao.consultar(Integer.parseInt(jtfIdEmprestimo.getText())); // passar do méodo pesquisar o que está vindo da tela
             
             System.out.println(dao.consultar(Integer.parseInt(jtfIdEmprestimo.getText())));
             if (livroEncontrado == null) {
-                JOptionPane.showMessageDialog(null, "Emprestimo não localizado");
+                JOptionPane.showMessageDialog(null, "Emprestimo do Livro não localizado");
             } else { //Se ele é localizado ele alimenta os camps da tela.
                 
-                jtfCodigoLivro.setText(livroEncontrado.getNumeroRegistro());
-                jtfNomeLivro.setText(livroEncontrado.getNomeLivro());
-                jtfStatusLivro.setText(livroEncontrado.getStatusLivro());
+                jtfCodigoLivro.setText(livroEncontrado.getLivro().getNumeroRegistroVirtual());
+                jtfIdLivro.setText(Integer.toString(livroEncontrado.getLivro().getIdNomeLivro()));
+                jtfNomeLivro.setText(livroEncontrado.getLivro().getNomeLivro());
+                jtfStatusLivro.setText(livroEncontrado.getLivro().getStatusLivro());
                 
                 
             }
@@ -429,6 +457,7 @@ public class Devolucao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -442,6 +471,7 @@ public class Devolucao extends javax.swing.JFrame {
     private javax.swing.JTable jtTabelaDevolucao;
     private javax.swing.JTextField jtfCodigoLivro;
     private javax.swing.JTextField jtfIdEmprestimo;
+    private javax.swing.JTextField jtfIdLivro;
     private javax.swing.JTextField jtfNomeLivro;
     private javax.swing.JTextField jtfRetornoLivro;
     private javax.swing.JTextField jtfStatusLivro;

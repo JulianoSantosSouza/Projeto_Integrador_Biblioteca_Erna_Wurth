@@ -33,7 +33,7 @@ public class EmprestimoLivroDao {
             st.setInt(1, emprestimo.getAluno_id());
             st.setInt(2, emprestimo.getLivro_id());
             st.setDate(3, emprestimo.getRetornoEmpestimo());
-            
+                        
             status = st.executeUpdate();
                         
             return status; //retornar 1

@@ -10,16 +10,18 @@ public class EmprestimoLivro {
     public Livro livro;
     public Aluno aluno;
     public Date RetornoEmpestimo;
+    public String livroDevolvido = "NÃO";
 
     public EmprestimoLivro() {
     }
 
-    public EmprestimoLivro(int idEmprestimo, int livro_id, Livro livro, Aluno aluno, Date RetornoEmpestimo) {
+    public EmprestimoLivro(int idEmprestimo, int livro_id, Livro livro, Aluno aluno, Date RetornoEmpestimo, String livroDevolvido) {
         this.idEmprestimo = idEmprestimo;
         this.livro_id = livro_id;
         this.livro = livro;
         this.aluno = aluno;
         this.RetornoEmpestimo = RetornoEmpestimo;
+        this.livroDevolvido = livroDevolvido;
     }
 
     public int getIdEmprestimo() {
@@ -69,6 +71,16 @@ public class EmprestimoLivro {
     public void setAluno_id(int aluno_id) {
         this.aluno_id = aluno_id;
     }
+
+    public String getLivroDevolvido() {
+        return livroDevolvido;
+    }
+
+    public void setLivroDevolvido(String livroDevolvido) {
+        this.livroDevolvido = livroDevolvido;
+    }
+    
+    
 
     int getRetornoEmpestimo(Date date) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

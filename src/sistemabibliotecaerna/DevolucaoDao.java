@@ -29,22 +29,31 @@ public class DevolucaoDao {
         }
     }
     
-    public Livro consultar (int id){
+    public EmprestimoLivro consultar (int id){
          
         try {
+            EmprestimoLivro emprestimo = new EmprestimoLivro();
             Livro livro = new Livro();
             
-            st = conn.prepareStatement("SELECT numeroRegistro, nomeLivro, statusLivro FROM bibliotecaernawurth.livro WHERE idLivro = ?");
+            st = conn.prepareStatement("SELECT Emprestimolivro.id, livro.numeroVirtual, livro.idLivro, livro.nomeLivro, livro.statusLivro\n" +
+            "FROM Emprestimolivro\n" +
+            "JOIN livro ON Emprestimolivro.livro_id = livro.idLivro\n" +
+            "WHERE Emprestimolivro.id = ?");
+            
             st.setInt(1, id);
             rs = st.executeQuery();
             //verificar se a consulta encontrou o livro com a id informada
             if(rs.next()){ // se encontrou o livro, vamos carregar os dados
-                livro.setNumeroRegistro(rs.getString("numeroRegistro"));
+                
+                livro.setNumeroRegistroVirtual(rs.getString("numeroVirtual"));
+                livro.setIdNomeLivro(rs.getInt("idLivro"));
                 livro.setNomeLivro(rs.getString("nomeLivro"));
                 livro.setStatusLivro(rs.getString("statusLivro"));
                 
+                emprestimo.setLivro(livro);
                 
-                return livro;
+                return emprestimo;
+                
             }else{
                 return null;
             }
@@ -71,7 +80,7 @@ public class DevolucaoDao {
         }
     }
     
-    public List<EmprestimoLivro> listagemDevolucao(String filtro) {
+    /*public List<EmprestimoLivro> listagemDevolucao(String filtro) {
 
         String sql = "select E.id AS emprestimolivro, numeroRegistro AS livro, L.nomeLivro AS livro, L.statusLivro AS livro, A.nomeAluno AS aluno, E.dataRetornoLivro as emprestimolivro from emprestimolivro AS E INNER JOIN livro As L ON E.livro_id=L.idLivro INNER JOIN aluno AS A ON E.aluno_id=A.id;";
 
@@ -108,7 +117,7 @@ public class DevolucaoDao {
             System.out.println("Erro ao conectar: " + ex.getMessage());
             return null;
         }
-    }
+    }*/
     
     public List<DevolucaoLivro> listarLivrosEmprestados() {
              
@@ -116,11 +125,11 @@ public class DevolucaoDao {
             
             List<DevolucaoLivro> listDevolucao = new ArrayList<>();
                         
-            st = conn.prepareStatement("SELECT Emprestimolivro.dataRetornoLivro, livro.idLivro, livro.numeroVirtual, livro.nomeLivro, livro.statusLivro, Aluno.nomeAluno\n" +
+            st = conn.prepareStatement("SELECT Emprestimolivro.dataRetornoLivro, Emprestimolivro.id, Emprestimolivro.livroDevolvido, livro.idLivro, livro.numeroVirtual, livro.nomeLivro, livro.statusLivro, Aluno.nomeAluno\n" +
             "FROM Emprestimolivro\n" +
             "JOIN livro ON Emprestimolivro.livro_id = livro.idLivro\n" +
             "JOIN Aluno ON Emprestimolivro.aluno_id = aluno.id\n" +
-            "WHERE livro.statusLivro = 'Emprestado'");
+            "WHERE Emprestimolivro.livroDevolvido = 'NÃO'");
             
             rs = st.executeQuery();
             
@@ -128,16 +137,20 @@ public class DevolucaoDao {
                 Livro livro = new Livro();
                 Aluno aluno = new Aluno();
                 DevolucaoLivro devolucao = new DevolucaoLivro();
+                EmprestimoLivro emprestimo = new EmprestimoLivro();
                 
+                emprestimo.setIdEmprestimo(rs.getInt("id"));
                 livro.setIdNomeLivro(rs.getInt("idLivro"));
                 livro.setNumeroRegistroVirtual(rs.getString("NumeroVirtual"));
                 livro.setNomeLivro(rs.getString("NomeLivro"));
                 livro.setStatusLivro(rs.getString("StatusLivro"));
                 aluno.setNomeUsuario(rs.getString("NomeAluno"));
                 devolucao.setDataRetorno(rs.getDate("dataRetornoLivro"));
+                emprestimo.setLivroDevolvido(rs.getString("livroDevolvido"));
                 
                 devolucao.setLivro(livro);
                 devolucao.setAluno(aluno);
+                devolucao.setEmprestimoLivro(emprestimo);
                 
                 //DevolucaoLivro devolucaoObj = new DevolucaoLivro();
                 listDevolucao.add(devolucao);
@@ -146,17 +159,34 @@ public class DevolucaoDao {
             
             
         } catch (Exception e) {
-            System.out.println("Erro ao Listar os livros na tabela Devolução: " + e.getMessage());
+            System.out.println("Erro ao Listar os livros na tabela Emprestados: " + e.getMessage());
             return null;
         }
     }
     
-    public int AtualizarStatus(Livro livro){
+    public int AtualizarStatusLivro(Livro livro){
         int status;
         try {
             st = conn.prepareStatement("UPDATE livro SET statusLivro = ? WHERE idLivro = ?");
             st.setString(1, "Na Biblioteca");
             st.setInt(2, livro.getIdNomeLivro());
+                        
+            status = st.executeUpdate();
+                        
+            return status; //retornar 1
+            
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar ao Banco de Dados Livro: " + ex.getMessage());
+            return ex.getErrorCode();
+        }
+    }
+    
+    public int AtualizarStatusDevolucao(EmprestimoLivro emprestimo){
+        int status;
+        try {
+            st = conn.prepareStatement("UPDATE emprestimolivro SET livroDevolvido = ? WHERE id = ?");
+            st.setString(1, "SIM");
+            st.setInt(2, emprestimo.getIdEmprestimo());
                         
             status = st.executeUpdate();
                         
